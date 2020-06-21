@@ -1,6 +1,8 @@
 package com.iisi.test.brian.demo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +10,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import java.lang.reflect.Type;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CathayUnitedBankJavaExerciseTests {
 
@@ -79,7 +82,7 @@ public class CathayUnitedBankJavaExerciseTests {
 
         JAXBContext jaxbContext = JAXBContext.newInstance(Xmlobj.Note.class);
         Unmarshaller jaxbContextUnmarshaller = jaxbContext.createUnmarshaller();
-        Xmlobj.Note actual= (Xmlobj.Note)jaxbContextUnmarshaller.unmarshal(new StringReader(str));
+        Xmlobj.Note actual = (Xmlobj.Note) jaxbContextUnmarshaller.unmarshal(new StringReader(str));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(actual.to).isEqualTo("YOU");
@@ -89,6 +92,30 @@ public class CathayUnitedBankJavaExerciseTests {
         softAssertions.assertThat(actual.attachs.attaches.get(0).name).isEqualTo("1");
         softAssertions.assertThat(actual.attachs.attaches.get(0).content).isEqualTo("2");
 
+        softAssertions.assertAll();
+    }
+
+    @Test
+    public void test_Q3() {
+        String str = "[{\"userId\" : 2003,\"name\" : \"張三\",\"loginTime\" : \"2018-11-13T20:20:39+00:00\"},{\"userId\" :\n" +
+                "2004,\"name\" : \"李四\",\"loginTime\" : \"2018-11-13T20:20:01+00:00\"},{\"userId\" :\n" +
+                "2005,\"name\" : \"王五\",\"loginTime\" : \"2018-11-13T20:20:01+00:00\"}]";
+
+//        System.out.println(str);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ:ZZ").create();
+        Type type = new TypeToken<List<JsonobjQ3>>() {}.getType();
+        List<JsonobjQ3> jsonobj = gson.fromJson(str, type);
+
+        List<JsonobjQ3> actual = jsonobj.stream().sorted(
+                Comparator.comparing(JsonobjQ3::getLoginTime)
+                        .thenComparing(JsonobjQ3::getUserId).reversed()
+        ).collect(Collectors.toList());
+
+
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(actual.get(0).userId).isEqualTo(2003);
+        softAssertions.assertThat(actual.get(1).userId).isEqualTo(2005);
+        softAssertions.assertThat(actual.get(2).userId).isEqualTo(2004);
         softAssertions.assertAll();
     }
 }
