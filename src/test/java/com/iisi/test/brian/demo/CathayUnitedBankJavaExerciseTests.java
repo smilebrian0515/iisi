@@ -10,10 +10,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CathayUnitedBankJavaExerciseTests {
 
@@ -103,7 +106,8 @@ public class CathayUnitedBankJavaExerciseTests {
 
 //        System.out.println(str);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ:ZZ").create();
-        Type type = new TypeToken<List<JsonobjQ3>>() {}.getType();
+        Type type = new TypeToken<List<JsonobjQ3>>() {
+        }.getType();
         List<JsonobjQ3> jsonobj = gson.fromJson(str, type);
 
         List<JsonobjQ3> actual = jsonobj.stream().sorted(
@@ -117,5 +121,41 @@ public class CathayUnitedBankJavaExerciseTests {
         softAssertions.assertThat(actual.get(1).userId).isEqualTo(2005);
         softAssertions.assertThat(actual.get(2).userId).isEqualTo(2004);
         softAssertions.assertAll();
+    }
+
+    @Test
+    public void test_Q4_1() throws UnsupportedEncodingException {
+        String str = "威";
+        boolean excepted = true;
+
+        boolean actual = new ValidTools().isBig5Encoding(str.getBytes());
+        assertThat(actual).isEqualTo(excepted);
+    }
+
+    @Test
+    public void test_Q4_12() throws UnsupportedEncodingException {
+        String str = "二";
+        boolean excepted = true;
+
+        boolean actual = new ValidTools().isBig5Encoding(str.getBytes());
+        assertThat(actual).isEqualTo(excepted);
+    }
+
+    @Test
+    public void test_Q4_2() throws UnsupportedEncodingException {
+        String str = "燰";
+        boolean excepted = false;
+
+        boolean actual = new ValidTools().isBig5Encoding(str.getBytes());
+        assertThat(actual).isEqualTo(excepted);
+    }
+
+    @Test
+    public void test_Q4_22() throws UnsupportedEncodingException {
+        String str = "訲";
+        boolean excepted = true;
+
+        boolean actual = new ValidTools().isBig5Encoding(str.getBytes());
+        assertThat(actual).isEqualTo(excepted);
     }
 }
