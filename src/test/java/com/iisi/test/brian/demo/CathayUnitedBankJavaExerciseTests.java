@@ -169,4 +169,26 @@ public class CathayUnitedBankJavaExerciseTests {
 
     create index indexName on TableName (latitude,longitude);
     * */
+
+    /* Q6
+    * build.gradle 加入套件 implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    * application.properties 加入連線資料
+    * 新增跟資料表對應的 @Enity 程式
+    * 新增操作用的 @Repository 程式
+    * */
+
+    /* Q7
+    * 一個相對比較新，比較方便的框架
+    * 可以利用各種 annotation 去節省一些事情，例如以前在 struts2 需要寫 struts-config.xml
+    * 但是在 Spring Boot 可以在 Controller 用 @PostMapping("path") 就可以輕鬆設定好對應
+    * 速度有快一些，預設是 Singleton (也可以用 @Scope 去更改)
+    * 要寫 RESTful API 可以用 @RestController
+    * 要寫會回頁面的，可以用 @Controller 搭配 @ModelAttribute 去做
+    * 利用 AOP 可以將一些耦合切開，或是統一整理特定動作 (不太熟)
+    * @Transational 因為AOP，要不同類別呼叫才有效果，同類別的方法呼叫會無效
+    * 可以利用 DataSourceTransactionManager 去做 Transation，可以比較直觀的看到控管範圍
+    * 使用 Gradle Project 在套件的管理上比較簡單和方便
+    * 有區分 main 和 test，寫測試也比較好整理
+    * 直接把 tomcat 包在 jar 裡面，所以 build 出來的 jar 可以直接拿來啟動
+    * */
 }
