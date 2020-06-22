@@ -158,4 +158,15 @@ public class CathayUnitedBankJavaExerciseTests {
         boolean actual = new ValidTools().isBig5Encoding(str.getBytes());
         assertThat(actual).isEqualTo(excepted);
     }
+
+    /* Q5
+    create table TableName (
+    country nvarchar(2),
+    latitude float,
+    longitude float,
+    name nvarchar,
+    );
+
+    create index indexName on TableName (latitude,longitude);
+    * */
 }
